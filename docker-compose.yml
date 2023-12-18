@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  # MySQL database
+  mysql:
+    image: mysql:latest
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    ports:
+      - "3344:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    command: --sql-mode=""
+
+  # phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin-container
+    environment:
+      PMA_ARBITRARY: 1
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "8090:80"
+    depends_on:
+      - mysql
+
+volumes:
+  mysql-data:
