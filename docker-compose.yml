@@ -16,7 +16,7 @@ services:
       - mysql-data:/var/lib/mysql
     command: --sql-mode=""
     networks:
-      - mysql-network
+      - mynetwork
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
@@ -31,10 +31,11 @@ services:
     depends_on:
       - mysql
     networks:
-      - mysql-network
+      - mynetwork
 
 volumes:
   mysql-data:
 
 networks:
-  mysql-network:
+  mynetwork:
+    name: mysql-network
