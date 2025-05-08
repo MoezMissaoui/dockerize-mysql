@@ -1,10 +1,10 @@
 version: '3'
 
 services:
-  # MySQL database
   mysql:
     image: mysql:latest
     container_name: mysql-container
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root_password
       MYSQL_DATABASE: mydatabase
@@ -15,19 +15,26 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
     command: --sql-mode=""
+    networks:
+      - mysql-network
 
-  # phpMyAdmin
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     container_name: phpmyadmin-container
+    restart: always
     environment:
       PMA_ARBITRARY: 1
-      MYSQL_ROOT_USER: root
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root_password
+      UPLOAD_LIMIT: 100M  # Optional: Set upload limit for file imports
     ports:
       - "8090:80"
     depends_on:
       - mysql
+    networks:
+      - mysql-network
 
 volumes:
   mysql-data:
+
+networks:
+  mysql-network:
